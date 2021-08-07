@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.2.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1a027d59a348c3abbe63de2e0abd69e8381c1d3c27c5e8d6985443158122eccc
+-- hash: 433363ac0040220b95c8fa180a0b8afb64d1fdb9370ff4fc7905c55a2474bb5c
 
 name:           template
 version:        1.0.0
@@ -32,11 +32,31 @@ library
       Paths_template
   hs-source-dirs:
       src
-  default-extensions: EmptyCase FlexibleContexts FlexibleInstances InstanceSigs MultiParamTypeClasses LambdaCase MultiWayIf NamedFieldPuns TupleSections DeriveFoldable DeriveFunctor DeriveGeneric DeriveLift DeriveTraversable DerivingStrategies GeneralizedNewtypeDeriving StandaloneDeriving OverloadedStrings TypeApplications
+  default-extensions:
+      EmptyCase
+      FlexibleContexts
+      FlexibleInstances
+      InstanceSigs
+      MultiParamTypeClasses
+      LambdaCase
+      MultiWayIf
+      NamedFieldPuns
+      TupleSections
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingStrategies
+      GeneralizedNewtypeDeriving
+      StandaloneDeriving
+      OverloadedStrings
+      TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-uni-patterns -Wredundant-constraints -Wincomplete-record-updates -Widentities
   build-depends:
-      Cabal
-    , base >=4.7 && <5
+      base >=4.7 && <5
+    , containers
+    , unordered-containers
   default-language: Haskell2010
 
 executable exe
@@ -45,12 +65,32 @@ executable exe
       Paths_template
   hs-source-dirs:
       app
-  default-extensions: EmptyCase FlexibleContexts FlexibleInstances InstanceSigs MultiParamTypeClasses LambdaCase MultiWayIf NamedFieldPuns TupleSections DeriveFoldable DeriveFunctor DeriveGeneric DeriveLift DeriveTraversable DerivingStrategies GeneralizedNewtypeDeriving StandaloneDeriving OverloadedStrings TypeApplications
+  default-extensions:
+      EmptyCase
+      FlexibleContexts
+      FlexibleInstances
+      InstanceSigs
+      MultiParamTypeClasses
+      LambdaCase
+      MultiWayIf
+      NamedFieldPuns
+      TupleSections
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingStrategies
+      GeneralizedNewtypeDeriving
+      StandaloneDeriving
+      OverloadedStrings
+      TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-uni-patterns -Wredundant-constraints -Wincomplete-record-updates -Widentities -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      Cabal
-    , base >=4.7 && <5
+      base >=4.7 && <5
+    , containers
     , template
+    , unordered-containers
   default-language: Haskell2010
 
 test-suite unit
@@ -61,12 +101,32 @@ test-suite unit
       Paths_template
   hs-source-dirs:
       test
-  default-extensions: EmptyCase FlexibleContexts FlexibleInstances InstanceSigs MultiParamTypeClasses LambdaCase MultiWayIf NamedFieldPuns TupleSections DeriveFoldable DeriveFunctor DeriveGeneric DeriveLift DeriveTraversable DerivingStrategies GeneralizedNewtypeDeriving StandaloneDeriving OverloadedStrings TypeApplications
+  default-extensions:
+      EmptyCase
+      FlexibleContexts
+      FlexibleInstances
+      InstanceSigs
+      MultiParamTypeClasses
+      LambdaCase
+      MultiWayIf
+      NamedFieldPuns
+      TupleSections
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingStrategies
+      GeneralizedNewtypeDeriving
+      StandaloneDeriving
+      OverloadedStrings
+      TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-uni-patterns -Wredundant-constraints -Wincomplete-record-updates -Widentities
   build-depends:
-      Cabal
-    , base >=4.7 && <5
+      base >=4.7 && <5
+    , containers
     , hspec
     , hspec-core
     , template
+    , unordered-containers
   default-language: Haskell2010
