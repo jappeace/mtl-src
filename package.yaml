@@ -1,10 +1,10 @@
-name:                template
+name:                mtl-src
 version:             1.0.0
 license:             MIT
 author:              "Jappie Klooster"
 maintainer:          "jappieklooster@hotmail.com"
 copyright:           "2020 Jappie Klooster"
-github:              "jappeace/haskell-template-project"
+github:              "jappeace/mtl-src"
 
 extra-source-files:
 - Readme.md
@@ -59,7 +59,7 @@ executables:
     main:                exe.hs
     source-dirs:         app
     dependencies:
-    - template
+    - mtl-src
     ghc-options:
     - -threaded
     - -rtsopts
@@ -73,4 +73,4 @@ tests:
     dependencies:
     - hspec
     - hspec-core
-    - template
+    - mtl-src

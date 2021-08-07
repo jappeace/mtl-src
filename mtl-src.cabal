@@ -3,13 +3,11 @@ cabal-version: 1.12
 -- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: 433363ac0040220b95c8fa180a0b8afb64d1fdb9370ff4fc7905c55a2474bb5c
 
-name:           template
+name:           mtl-src
 version:        1.0.0
-homepage:       https://github.com/jappeace/haskell-template-project#readme
-bug-reports:    https://github.com/jappeace/haskell-template-project/issues
+homepage:       https://github.com/jappeace/mtl-src#readme
+bug-reports:    https://github.com/jappeace/mtl-src/issues
 author:         Jappie Klooster
 maintainer:     jappieklooster@hotmail.com
 copyright:      2020 Jappie Klooster
@@ -23,13 +21,13 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/jappeace/haskell-template-project
+  location: https://github.com/jappeace/mtl-src
 
 library
   exposed-modules:
       Lib
   other-modules:
-      Paths_template
+      Paths_mtl_src
   hs-source-dirs:
       src
   default-extensions:
@@ -62,7 +60,7 @@ library
 executable exe
   main-is: exe.hs
   other-modules:
-      Paths_template
+      Paths_mtl_src
   hs-source-dirs:
       app
   default-extensions:
@@ -89,7 +87,7 @@ executable exe
   build-depends:
       base >=4.7 && <5
     , containers
-    , template
+    , mtl-src
     , unordered-containers
   default-language: Haskell2010
 
@@ -98,7 +96,7 @@ test-suite unit
   main-is: Spec.hs
   other-modules:
       Test.TestSpec
-      Paths_template
+      Paths_mtl_src
   hs-source-dirs:
       test
   default-extensions:
@@ -127,6 +125,6 @@ test-suite unit
     , containers
     , hspec
     , hspec-core
-    , template
+    , mtl-src
     , unordered-containers
   default-language: Haskell2010

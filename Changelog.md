@@ -1,4 +1,8 @@
-# Change log for template project
+# Change log for mtl-src project
+
+## Version 1.0.0 
+
+rewrote that blogpost to mtl
 
 ## Version 0.0.0 
 
