@@ -4,6 +4,7 @@
 {-# LANGUAGE DeriveFoldable #-}
 {-# LANGUAGE DeriveTraversable #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE InstanceSigs #-}
 
 -- I made this blogpost compile: https://blog.cofree.coffee/2021-08-05-a-brief-intro-to-monad-transformers/
 -- I claim fair use since I changed it to mtl style.
@@ -16,6 +17,7 @@ import qualified Data.Map as M
 import qualified Data.HashSet as S
 import Control.Monad.Except
 import Control.Monad.State
+import Control.Monad.Writer
                  --
 data AST a = Leaf a | Node (AST a) (AST a)
   deriving (Show, Functor, Foldable, Traversable)
@@ -50,6 +52,10 @@ main =
   in do
     print =<< evalStateT (runExceptT $ assignIndexToVariables ast vars) mempty
     print =<< runExceptT (flip evalStateT mempty $ assignIndexToVariables ast vars)
+    print =<< runExceptT (flip evalStateT mempty $ assignIndexToVariables2 ast vars)
+    let pureCode :: (Either String (AST Int),  [String])
+        pureCode = runWriter $ runNihLog $ runExceptT (flip evalStateT mempty $ assignIndexToVariables2 ast vars)
+    print pureCode
     print (eitherFive, maybeFive)
 
 
@@ -68,3 +74,43 @@ maybeFive :: Int
 maybeFive = case moreMonad of
   Just x -> x
   Nothing -> 9
+
+
+class (Monad m) => NotInventedHereLog m where
+    nihLog :: String -> m ()
+
+instance NotInventedHereLog IO where
+    nihLog :: String -> IO ()
+    nihLog = putStrLn
+
+assignIndexToVariables2 ::
+  NotInventedHereLog m =>
+  MonadError String m =>
+  MonadState (M.Map VariableName Int) m =>
+  AST VariableName -> Variables -> m (AST Int)
+assignIndexToVariables2 ast variables = forM ast $ \var -> do
+    nihLog "start more monad"
+    _z <- moreMonad
+    nihLog "start the unless"
+    unless (var `S.member` variables) $
+      throwError $ "Unknown Variable " <> var
+    nihLog "end the unlesss"
+    cache <- get
+    case M.lookup var cache of
+      Just index -> pure index
+      Nothing -> do
+        let index = M.size cache
+        put $ M.insert var index cache
+        pure index
+
+instance (NotInventedHereLog m) => NotInventedHereLog (StateT s m) where
+  nihLog = lift . nihLog
+instance (NotInventedHereLog m) => NotInventedHereLog (ExceptT e m) where
+  nihLog = lift . nihLog
+
+newtype NihLogT m a = MkNihLogT {
+        runNihLog :: WriterT [String] m a
+    } deriving (Functor, Applicative, Monad, MonadTrans, MonadWriter [String])
+
+instance Monad m => NotInventedHereLog (NihLogT m) where
+  nihLog msg = tell [msg]
