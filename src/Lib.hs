@@ -24,26 +24,47 @@ type VariableName = String
 type Variables = S.HashSet VariableName
 
 assignIndexToVariables ::
+  MonadIO m =>
   MonadError String m =>
   MonadState (M.Map VariableName Int) m =>
   AST VariableName -> Variables -> m (AST Int)
 assignIndexToVariables ast variables = forM ast $ \var -> do
-  unless (var `S.member` variables) $
-    throwError $ "Unknown Variable " <> var
-  cache <- get
-  case M.lookup var cache of
-    Just index -> pure index
-    Nothing -> do
-      let index = M.size cache
-      put $ M.insert var index cache
-      pure index
+    macGyverLog "start more monad"
+    _z <- moreMonad
+    macGyverLog "start the unless"
+    unless (var `S.member` variables) $
+      throwError $ "Unknown Variable " <> var
+    macGyverLog "end the unlesss"
+    cache <- get
+    case M.lookup var cache of
+      Just index -> pure index
+      Nothing -> do
+        let index = M.size cache
+        put $ M.insert var index cache
+        pure index
 
 main :: IO ()
 main =
   let vars = S.fromList ["a", "b", "c"]
       ast = Node (Leaf "a") (Node (Leaf "b") (Node (Leaf "a") (Leaf "c")))
   in do
-    print $ flip evalState mempty $ runExceptT $ assignIndexToVariables ast vars
-    print $ runExcept $ flip evalStateT mempty $ assignIndexToVariables ast vars
+    print =<< evalStateT (runExceptT $ assignIndexToVariables ast vars) mempty
+    print =<< runExceptT (flip evalStateT mempty $ assignIndexToVariables ast vars)
     print (eitherFive, maybeFive)
 
+
+macGyverLog :: MonadIO m => String -> m ()
+macGyverLog msg = liftIO $ putStrLn msg
+
+moreMonad :: Monad m => m Int
+moreMonad = pure 5
+
+eitherFive :: Int
+eitherFive = case moreMonad of
+  Right x -> x
+  Left _y -> 9
+
+maybeFive :: Int
+maybeFive = case moreMonad of
+  Just x -> x
+  Nothing -> 9
