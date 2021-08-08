@@ -114,3 +114,27 @@ newtype NihLogT m a = MkNihLogT {
 
 instance Monad m => NotInventedHereLog (NihLogT m) where
   nihLog msg = tell [msg]
+
+at :: Char -> ExceptT String (State (M.Map VariableName Int)) Int
+at _ = pure 5
+bt :: Int -> StateT (M.Map VariableName Int) (Except String) String
+bt _ = pure "x"
+
+-- fails:
+-- ct :: Char -> _ String
+-- ct = at >=> bt
+
+am :: MonadError String m
+  => MonadState (M.Map VariableName Int) m
+  => Char -> m Int
+am _ = pure 5
+
+bm :: MonadState (M.Map VariableName Int) m
+  => MonadError String m
+  => Int -> m String
+bm _ = pure "x"
+
+cm :: MonadState (M.Map VariableName Int) m
+    => MonadError String m
+    => Char -> m String
+cm = am >=> bm
