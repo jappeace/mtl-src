@@ -51,6 +51,8 @@ dependencies:
 - unordered-containers
 - containers
 - monad-control
+- transformers
+- mtl
 
 library:
   source-dirs: src
