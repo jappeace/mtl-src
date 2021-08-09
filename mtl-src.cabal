@@ -54,6 +54,7 @@ library
   build-depends:
       base >=4.7 && <5
     , containers
+    , monad-control
     , unordered-containers
   default-language: Haskell2010
 
@@ -87,6 +88,7 @@ executable exe
   build-depends:
       base >=4.7 && <5
     , containers
+    , monad-control
     , mtl-src
     , unordered-containers
   default-language: Haskell2010
@@ -125,6 +127,7 @@ test-suite unit
     , containers
     , hspec
     , hspec-core
+    , monad-control
     , mtl-src
     , unordered-containers
   default-language: Haskell2010

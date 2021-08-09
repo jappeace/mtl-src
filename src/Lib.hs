@@ -5,6 +5,7 @@
 {-# LANGUAGE DeriveTraversable #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 -- I made this blogpost compile: https://blog.cofree.coffee/2021-08-05-a-brief-intro-to-monad-transformers/
 -- I claim fair use since I changed it to mtl style.
@@ -18,6 +19,9 @@ import qualified Data.HashSet as S
 import Control.Monad.Except
 import Control.Monad.State
 import Control.Monad.Writer
+import Control.Monad.Trans.Class
+import Control.Monad.Trans.Control
+
                  --
 data AST a = Leaf a | Node (AST a) (AST a)
   deriving (Show, Functor, Foldable, Traversable)
@@ -123,6 +127,30 @@ bt _ = pure "x"
 -- fails:
 -- ct :: Char -> _ String
 -- ct = at >=> bt
+
+-- 天上不会掉馅饼
+
+-- The answer to the liftWith Question.
+-- I put it in because I want to show you my first 2 weeks or so
+-- of professional Haskell, it was quite the learning curve.
+--
+-- Furthermore, I want to show that it's possible to combine
+-- these not matching stacks, it just takes a lot of puzzling,
+-- and it becomes more difficult as your stack grows.
+-- So I'd like to repeat that it's totally fine to use transformers
+-- directly. Even these seemingly incompatible types can be composed
+-- with some effort and thought.
+answer :: Char -> ExceptT String (State (M.Map VariableName Int)) String
+answer x = do
+  outA <- at x
+  x :: Either [Char] ([Char], M.Map VariableName Int) <-
+    liftWith $ \outer ->
+      liftWith $ \inner ->
+        outer (inner $ bt outA)
+  y <- liftEither x -- this will put the either in ExceptT.
+  lift $ put $ snd y -- we need to put back in all state as well.
+  pure $ fst y
+
 
 am :: MonadError String m
   => MonadState (M.Map VariableName Int) m
